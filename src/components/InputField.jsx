@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InputField() {
   const [recipientName, setRecipientName] = useState('');
-  const [course, setCourse] = useState('');
+  const [event, setEvent] = useState('');
   const canvasRef = useRef(null);
   const navigate = useNavigate();
 
@@ -11,13 +11,13 @@ function InputField() {
     setRecipientName(e.target.value);
   };
 
-  const handleCourseChange = (e) => {
-    setCourse(e.target.value);
+  const handleEventChange = (e) => {
+    setEvent(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/Certificate', { state: { recipientName, course, canvasRef } });
+    navigate('/Certificate', { state: { recipientName, event, canvasRef } });
   };
 
   return (
@@ -34,13 +34,13 @@ function InputField() {
           />
         </label>
         <label className="input input-bordered flex items-center gap-2 mb-4">
-          Course
+          Event
           <input
             type="text"
             className="grow"
-            placeholder="Course Name"
-            value={course}
-            onChange={handleCourseChange}
+            placeholder="Event Name"
+            value={event}
+            onChange={handleEventChange}
           />
         </label>
         <div className="text-center">

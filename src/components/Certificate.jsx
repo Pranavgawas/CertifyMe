@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 function Certificate() {
   const { state } = useLocation();
-  const { recipientName, course, canvasRef } = state || {};
+  const { recipientName, event, canvasRef } = state || {};
   const canvasContainerRef = useRef(null);
 
   useEffect(() => {
@@ -38,10 +38,11 @@ function Certificate() {
 
           const ctx = canvas.getContext('2d');
           ctx.drawImage(image, 0, 0, width, height);
-          ctx.font = `${Math.floor(height / 20)}px Arial`; // Adjust font size based on image height
+          ctx.font = `${Math.floor(height / 20)}px Arial`; 
           ctx.fillStyle = 'black';
-          ctx.fillText(recipientName, width * 0.1, height * 0.2); // Adjust position based on image dimensions
-          ctx.fillText(course, width * 0.1, height * 0.3); // Adjust position based on image dimensions
+          ctx.fillText(recipientName, width * 0.3, height * 0.499); 
+          ctx.font = `${Math.floor(height / 30)}px Arial`; 
+          ctx.fillText(event, width * 0.5, height * 0.6); 
         };
       }
     };
@@ -49,7 +50,15 @@ function Certificate() {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [recipientName, course, canvasRef]);
+  }, [recipientName, event, canvasRef]);
+
+  const downloadCertificate = () => {
+    const canvas = canvasRef.current;
+    const link = document.createElement('a');
+    link.download = 'certificate.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
 
   return (
     <div>
@@ -58,11 +67,22 @@ function Certificate() {
         <div className="flex justify-center">
           <div className="w-full max-w-md p-10 rounded-md text-center glass text-white">
             <h1 className="text-5xl font-bold">Hello {recipientName}</h1>
-            <div>Your Certificate for {course} is here!!</div>
+            <div>Your Certificate for {event} is here!!</div>
           </div>
         </div>
-        <div ref={canvasContainerRef} className="certificate-image-container mt-8 w-full h-[80vh] flex justify-center items-center">
+        <div
+          ref={canvasContainerRef}
+          className="certificate-image-container mt-8 w-full h-[80vh] flex justify-center items-center"
+        >
           <canvas ref={canvasRef} className="max-w-full max-h-full" />
+        </div>
+        <div className="flex justify-center mt-4">
+          <button
+            className="btn btn-outline btn-success"
+            onClick={downloadCertificate}
+          >
+            Download Certificate
+          </button>
         </div>
       </div>
     </div>
